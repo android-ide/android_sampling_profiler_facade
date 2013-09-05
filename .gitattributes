@@ -1,0 +1,8 @@
+*	text=auto
+*.cc	diff=cpp
+*.cpp	diff=cpp
+*.c	diff=cpp
+*.h	diff=cpp
+*.hpp	diff=cpp
+*.java	diff=java
+*.m	diff=objc

@@ -18,7 +18,12 @@ package dalvik.system.profiler;
 
 import java.io.*;
 
-public final class AsciiHprofWriter
+/**
+ * Stub interface for compilation only. Compatible with the Android ICS and JB 
+ * sampling profiler implementation.
+ */
+
+public class AsciiHprofWriter
 {
 	public static void write(HprofData data, OutputStream outputStream) throws IOException
 	{

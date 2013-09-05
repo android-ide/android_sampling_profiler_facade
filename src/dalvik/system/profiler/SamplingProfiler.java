@@ -16,7 +16,12 @@
 
 package dalvik.system.profiler;
 
-public final class SamplingProfiler
+/**
+ * Stub interface for compilation only. Compatible with the Android ICS and JB 
+ * sampling profiler implementation.
+ */
+
+public class SamplingProfiler
 {
 	public SamplingProfiler(int depth, ThreadSet threadSet)
 	{

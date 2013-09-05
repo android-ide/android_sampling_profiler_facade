@@ -17,7 +17,7 @@
 package dalvik.system.profiler;
 
 /**
- * Stub interface for compilation only. Compatible with the Android ICS and JB 
+ * Stub interface for compilation only. Compatible with the Android ICS and JB
  * sampling profiler implementation.
  */
 

@@ -14,13 +14,22 @@
  * limitations under the License.
  */
 
-package dalvik.system.profiler;
+package com.appfour.android.samplingprofiler;
 
-/**
- * Stub interface for compilation only. Compatible with the Android ICS and JB
- * sampling profiler implementation.
- */
+import java.io.IOException;
+import java.io.OutputStream;
 
-public class HprofData
+import com.appfour.android.samplingprofiler.SamplingProfilerFacade.ThreadSet;
+
+interface SamplingProfilerAdapter
 {
+	void init(int stackDepth, ThreadSet threadSet);
+
+	void start(int intervalInMs);
+
+	void stop();
+
+	void shutdown();
+
+	void writeHprofData(OutputStream hprofOutStream) throws IOException;
 }

@@ -14,13 +14,39 @@
  * limitations under the License.
  */
 
-package dalvik.system.profiler;
+package dalvik.system;
+
+import java.io.PrintStream;
 
 /**
- * Stub interface for compilation only. Compatible with the Android ICS and JB
+ * Stub interface for compilation only. Compatible with the Android Gingerbread
  * sampling profiler implementation.
  */
 
-public class HprofData
+public class SamplingProfiler
 {
+	public SamplingProfiler(int depth, ThreadSet threadSet)
+	{
+	}
+
+	public void start(int interval)
+	{
+	}
+
+	public void stop()
+	{
+	}
+
+	public void shutdown()
+	{
+	}
+
+	public void writeHprofData(PrintStream out)
+	{
+	}
+
+	public static interface ThreadSet
+	{
+		public Thread[] threads();
+	}
 }

@@ -16,28 +16,29 @@
 
 package com.appfour.android.samplingprofiler;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
 
-import dalvik.system.profiler.*;
-
-public final class SamplingProfilerInterface
+public final class SamplingProfilerFacade
 {
 	private static final Object lock = new Object();
-	private static SamplingProfiler samplingProfiler;
+	private static SamplingProfilerAdapter samplingProfilerAdapter;
+	private static int intervalInMs;
+	private static boolean sampling;
 
-	private SamplingProfilerInterface()
+	private SamplingProfilerFacade()
 	{
 	}
-	
+
 	public static boolean isSampling()
 	{
 		synchronized (lock)
 		{
-			return samplingProfiler != null;
+			return sampling;
 		}
 	}
 
-	public static void startSampling(int stackDepth, int intervalInMs, final ThreadSet threadSet)
+	public static void init(int stackDepth, int intervalInMs, final ThreadSet threadSet)
 	{
 		synchronized (lock)
 		{
@@ -53,37 +54,24 @@ public final class SamplingProfilerInterface
 			{
 				throw new IllegalArgumentException();
 			}
-			if (samplingProfiler != null)
+			if (samplingProfilerAdapter != null)
 			{
-				throw new IllegalStateException("Sampling profiler already started");
+				throw new IllegalStateException("Sampling profiler already initialized");
 			}
-			samplingProfiler = new SamplingProfiler(stackDepth, 
-			new SamplingProfiler.ThreadSet()
-			{
-				@Override
-				public Thread[] threads()
-				{
-					return threadSet.threadsToSample();
-				}
-			});
-			samplingProfiler.start(intervalInMs);
-			
+			samplingProfilerAdapter = new IcsSamplingProfilerAdapter();
+			samplingProfilerAdapter.init(stackDepth, threadSet);
+			SamplingProfilerFacade.intervalInMs = intervalInMs;
 		}
 	}
 
-	public static void startSampling(int stackDepth, int intervalInMs)
-	{
-		startSampling(stackDepth, intervalInMs, new AllThreadsThreadSet());
-	}
-
-	public static void startSampling(int stackDepth, int intervalInMs, final Thread... threads)
+	public static void init(int stackDepth, int intervalInMs, final Thread... threads)
 	{
 		if (threads == null || threads.length == 0)
 		{
 			throw new IllegalArgumentException();
 		}
 
-		startSampling(stackDepth, intervalInMs, new ThreadSet()
+		init(stackDepth, intervalInMs, new ThreadSet()
 		{
 			@Override
 			public Thread[] threadsToSample()
@@ -93,23 +81,60 @@ public final class SamplingProfilerInterface
 		});
 	}
 
-	public static void finishSampling(OutputStream hprofOutStream) throws IOException
+	public static void init(int stackDepth, int intervalInMs)
 	{
-		HprofData hprofData;
+		init(stackDepth, intervalInMs, new AllThreadsThreadSet());
+	}
+
+	public static void startSampling()
+	{
 		synchronized (lock)
 		{
-			if (samplingProfiler == null)
+			if (samplingProfilerAdapter == null)
+			{
+				throw new IllegalStateException("Sampling profiler not initialized");
+			}
+			if (sampling)
+			{
+				throw new IllegalStateException("Sampling profiler already started");
+			}
+			samplingProfilerAdapter.start(intervalInMs);
+			sampling = true;
+		}
+	}
+
+	public static void stopSampling()
+	{
+		synchronized (lock)
+		{
+			if (samplingProfilerAdapter == null)
+			{
+				throw new IllegalStateException("Sampling profiler not initialized");
+			}
+			if (!sampling)
 			{
 				throw new IllegalStateException("Sampling profiler not started");
 			}
-			samplingProfiler.stop();
-			samplingProfiler.shutdown();
-			hprofData = samplingProfiler.getHprofData();
-			samplingProfiler = null;
+			samplingProfilerAdapter.stop();
+			sampling = false;
 		}
-		AsciiHprofWriter.write(hprofData, hprofOutStream);
 	}
-	
+
+	public static void writeHprofDataAndShutdown(OutputStream hprofOutStream) throws IOException
+	{
+		synchronized (lock)
+		{
+			if (samplingProfilerAdapter == null)
+			{
+				throw new IllegalStateException("Sampling profiler not started");
+			}
+			samplingProfilerAdapter.stop();
+			samplingProfilerAdapter.shutdown();
+			samplingProfilerAdapter.writeHprofData(hprofOutStream);
+			samplingProfilerAdapter = null;
+		}
+	}
+
 	public static interface ThreadSet
 	{
 		public Thread[] threadsToSample();
@@ -135,7 +160,7 @@ public final class SamplingProfilerInterface
 				int activeCount = Thread.activeCount();
 				int threadsLen = threads.length;
 				int newLen = threadsLen;
-				while(newLen < activeCount)
+				while (newLen < activeCount)
 				{
 					newLen *= 2;
 				}
@@ -146,7 +171,7 @@ public final class SamplingProfilerInterface
 				int enumeratedCount = Thread.enumerate(threads);
 				if (enumeratedCount <= newLen)
 				{
-					for(int i = lastEnumeratedCount; i < newLen; i++)
+					for (int i = lastEnumeratedCount; i < newLen; i++)
 					{
 						threads[i] = null;
 					}

@@ -58,7 +58,22 @@ public final class SamplingProfilerFacade
 			{
 				throw new IllegalStateException("Sampling profiler already initialized");
 			}
-			samplingProfilerAdapter = new IcsSamplingProfilerAdapter();
+			switch (android.os.Build.VERSION.SDK_INT)
+			{
+			case android.os.Build.VERSION_CODES.GINGERBREAD:
+			case android.os.Build.VERSION_CODES.GINGERBREAD_MR1:
+				samplingProfilerAdapter = new GingerbreadSamplingProfilerAdapter();
+				break;
+			case android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH:
+			case android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1:
+			case android.os.Build.VERSION_CODES.JELLY_BEAN:
+			case android.os.Build.VERSION_CODES.JELLY_BEAN_MR1:
+			case android.os.Build.VERSION_CODES.JELLY_BEAN_MR2:
+				samplingProfilerAdapter = new IcsSamplingProfilerAdapter();
+				break;
+			default:
+				throw new IllegalStateException("API level "+android.os.Build.VERSION.SDK_INT+" not supported by sampling profiler facade.");
+			}
 			samplingProfilerAdapter.init(stackDepth, threadSet);
 			SamplingProfilerFacade.intervalInMs = intervalInMs;
 		}

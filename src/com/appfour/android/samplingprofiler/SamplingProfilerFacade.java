@@ -106,7 +106,7 @@ public final class SamplingProfilerFacade
 				samplingProfilerAdapter = new IcsSamplingProfilerAdapter();
 				break;
 			default:
-				throw new IllegalStateException("API level "+android.os.Build.VERSION.SDK_INT+" not supported by sampling profiler facade.");
+				throw new UnsupportedOperationException("API level "+android.os.Build.VERSION.SDK_INT+" not supported by sampling profiler facade.");
 			}
 			samplingProfilerAdapter.init(stackDepth, threadSet);
 			SamplingProfilerFacade.intervalInMs = intervalInMs;

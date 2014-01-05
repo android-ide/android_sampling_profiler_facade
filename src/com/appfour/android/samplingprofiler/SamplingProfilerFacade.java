@@ -104,6 +104,7 @@ public final class SamplingProfilerFacade
 			case android.os.Build.VERSION_CODES.JELLY_BEAN:
 			case android.os.Build.VERSION_CODES.JELLY_BEAN_MR1:
 			case android.os.Build.VERSION_CODES.JELLY_BEAN_MR2:
+			case android.os.Build.VERSION_CODES.KITKAT:
 				samplingProfilerAdapter = new IcsSamplingProfilerAdapter();
 				break;
 			default:

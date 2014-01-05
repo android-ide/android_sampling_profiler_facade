@@ -226,7 +226,10 @@ public final class SamplingProfilerFacade
 			{
 				throw new IllegalStateException("Sampling profiler not started");
 			}
-			samplingProfilerAdapter.stop();
+			if (sampling)
+			{
+				samplingProfilerAdapter.stop();
+			}
 			samplingProfilerAdapter.shutdown();
 			samplingProfilerAdapter.writeHprofData(hprofOutStream);
 			samplingProfilerAdapter = null;

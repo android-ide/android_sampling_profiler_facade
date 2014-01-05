@@ -71,6 +71,7 @@ public final class SamplingProfilerFacade
 	 * time a sample is taken and tells the profiler which threads to include in the sample.
 	 * Should be limited to interesting threads.
 	 * 
+	 * @throws UnsupportedOperationException on unsupported Android versions
 	 */
 	public static void init(int stackDepth, int intervalInMs, final ThreadSet threadSet)
 	{
@@ -213,8 +214,8 @@ public final class SamplingProfilerFacade
 	}
 
 	/**
-	 * Writes data about the already taken samples in HPROF format to the provided 
-	 * {@code hprofOutStream}. Stops the sampling profiler first if necessary.
+	 * Stops the sampling profiler first if necessary. Writes data about the already taken 
+	 * samples in HPROF format to the provided {@code hprofOutStream}. 
 	 * 
 	 * Also erases the samples in memory and shuts down the profiler.
 	 */

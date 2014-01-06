@@ -20,7 +20,7 @@ dependencies {
 Since the Android sampling profiler is in-process you need to add some code to your app. The public API of
 the facade is contained in `com.appfour.samplingprofiler.SamplingProfilerfacade`.
 
-First initialize the profiler, e.g. in on the `onCreate()` method of an activity. The init() methods take
+First initialize the profiler, e.g. in on the `onCreate()` method of an activity. The `init()` methods take
 some parameters which can not be changed for this profiling session:
 
 * `stackDepth` - specifies number of stackframes that are being captured during
@@ -41,7 +41,7 @@ Sampling can be started and stopped using the `startSampling()` and `stopSamplin
 only the interesting parts of the app are being profiled.
 
 Once all interesting parts have been profiled the profiler can be shut down and profiling data can be 
-written out with the writeHprofDataAndShutdown() method.
+written out with the `writeHprofDataAndShutdown()` method.
 
 This example shows how take start samples when the activity is started and how to stop taking samples
 and write the profiling data once the activity is left.

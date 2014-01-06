@@ -58,8 +58,8 @@ public final class SamplingProfilerFacade
 	 * 
 	 * The {@code stackDepth} specifies number of stackframes that are being captured during
 	 * profiling. With a higher number more of the callchain to hotspots will be visible when
-	 * analyzing the captured data later. But a higher {@code stackDepth} also requires more 
-	 * memory on the VM heap during profiling. A {@code stackDepth} of ten is a good number 
+	 * analyzing the captured data later. But a higher stack depth also requires more 
+	 * memory on the VM heap during profiling. A stack depth of ten is a good number 
 	 * to start with.
 	 * 
 	 * {@code intervalInMs} specifies the interval between samples taken in ms. The lower the
@@ -120,8 +120,8 @@ public final class SamplingProfilerFacade
 	 * 
 	 * The {@code stackDepth} specifies number of stackframes that are being captured during
 	 * profiling. With a higher number more of the callchain to hotspots will be visible when
-	 * analyzing the captured data later. But a higher {@code stackDepth} also requires more 
-	 * memory on the VM heap during profiling. A {@code stackDepth} of ten is a good number 
+	 * analyzing the captured data later. But a higher stack depth also requires more 
+	 * memory on the VM heap during profiling. A stack depth of ten is a good number 
 	 * to start with.
 	 * 
 	 * {@code intervalInMs} specifies the interval between samples taken in ms. The lower the
@@ -153,8 +153,8 @@ public final class SamplingProfilerFacade
 	 * 
 	 * The {@code stackDepth} specifies number of stackframes that are being captured during
 	 * profiling. With a higher number more of the callchain to hotspots will be visible when
-	 * analyzing the captured data later. But a higher {@code stackDepth} also requires more 
-	 * memory on the VM heap during profiling. A {@code stackDepth} of ten is a good number 
+	 * analyzing the captured data later. But a higher stack depth also requires more 
+	 * memory on the VM heap during profiling. A stack depth of ten is a good number 
 	 * to start with.
 	 * 
 	 * {@code intervalInMs} specifies the interval between samples taken in ms. The lower the

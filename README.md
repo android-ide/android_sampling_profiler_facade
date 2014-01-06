@@ -1,13 +1,8 @@
 Android Sampling Profiler Facade
 ======================
 
-There is a hidden sampling profiler in Android going back at least as far as Android 2.3. It is not
-supported by the Android development tools and it is an in-process profiler which can't be triggered from
-the Dalvik Debug Monitor Server (DDMS). Furthermore it is not easily discoverable because it is not included 
-in the ADT android.jar files against which apps are built. 
-
-To make it easy to use the sampling profiler we have created an small library, the Android Sampling 
-Profiler Facade. It works with Android 2.3 and Android 4.x. To use just drop it into the libs/ directory
+There is a hidden sampling profiler in Android going back at least as far as Android 2.3. To make it easy to use the sampling profiler we have created an small library, the Android Sampling 
+Profiler Facade. It works with Android 2.3 and Android 4.x. To use just drop the JAR file into the libs/ directory
 of your Android project. If your project is an Android Studio project you also have to add the JAR dependency
 to your `build.gradle` file:
 
@@ -34,8 +29,8 @@ some parameters which can not be changed for this profiling session:
   requires more memory and affects the behavior of the program more. An interval of 10 ms 
   (equivalent to about 100 samples per second) is a good value to start with.
  
-* The third parameter specifies what threads are being sampled. There are several methods for specifying all
-  thread, a fixed number of threads, or a dynamically computed ThreadSet
+* The third parameter specifies what threads are being sampled. There are several overloads for specifying all
+  threads, a fixed number of threads, or a dynamically computed ThreadSet
   
 Sampling can be started and stopped using the `startSampling()` and `stopSampling()` methods. This way 
 only the interesting parts of the app are being profiled.
@@ -43,7 +38,7 @@ only the interesting parts of the app are being profiled.
 Once all interesting parts have been profiled the profiler can be shut down and profiling data can be 
 written out with the `writeHprofDataAndShutdown()` method.
 
-This example shows how take start samples when the activity is started and how to stop taking samples
+The following example shows how take start samples when the activity is started and how to stop taking samples
 and write the profiling data once the activity is left.
 
 ``` java
@@ -74,10 +69,10 @@ and write the profiling data once the activity is left.
 
 Analyzing the profiling data
 -------
-The profiling data is written out in HPROF format. The only tool I have found which can analyzse
+The profiling data is written out in HPROF format. The only tool I have found which can analyze
 those files is [JPerfAnal](http://jperfanal.sourceforge.net/). It looks a bit outdated and 
 does not have a lot of features but it works well enough for finding hotspots.
-After copying the .hprof file onto your PC run JPerfAnal with `java -jar jperfanal.jar sampling.hprof`.
+After copying the `.hprof` file onto your PC run JPerfAnal with `java -jar jperfanal.jar sampling.hprof`.
 
-The line number information capture does not seem to be accurate so the 'Method times by Caller' and
-'Method times by callee' sections are the most interesting.
+The line number information captured does not seem to be accurate so the 'Method times by Caller' and
+'Method times by Callee' sections are the most interesting.
